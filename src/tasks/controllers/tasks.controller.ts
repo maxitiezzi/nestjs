@@ -3,6 +3,7 @@ import { TasksService } from '../services/tasks.service';
 import { Task } from '../entities/task.entity';
 import { ApiBody, ApiConsumes, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { type } from 'os';
+import { CreateTaskDto, UpdateTaskDto } from '../dto/task.dto';
 
 @Controller('tasks')
 export class TasksController {
@@ -11,12 +12,22 @@ export class TasksController {
 
     @Get()
     @ApiTags('tasks')
-    @ApiOperation({ summary: 'Devuelve una tarea', description: 'Devuelve una tarea' })
+    @ApiOperation({ summary: 'Devuelve todas las tareas', description: 'Devuelve todas las tareas' })
     @ApiParam({ name: 'id', type: String })
     @ApiResponse({ status: 200, type: Task, })
     @ApiResponse({ status: 404, type: Error, })
     getAll() {
         return this.taskService.findAll()
+    }
+
+    @Get(':id')
+    @ApiTags('tasks')
+    @ApiOperation({ summary: 'Devuelve una tarea', description: 'Devuelve una tarea' })
+    @ApiParam({ name: 'id', type: String })
+    @ApiResponse({ status: 200, type: Task, })
+    @ApiResponse({ status: 404, type: Error, })
+    get(@Param('id') id: number) {
+        return this.taskService.get(id)
     }
 
     @Post()
@@ -25,9 +36,8 @@ export class TasksController {
     @ApiBody(({ description: 'Tiene que llegar un objeto de tipo Task', type: Task }))
     @ApiResponse({ status: 200, type: Task, })
     @ApiResponse({ status: 404, type: Error, })
-    insert(@Body('name') name: string, @Body('idTablero') idTablero: number) {
-        console.log(name)
-        return this.taskService.insert(name, idTablero)
+    insert(@Body() newTask: CreateTaskDto) {
+        return this.taskService.insert(newTask.name, newTask.status, newTask.idDashboard)
     }
 
     @Put(':id')
@@ -36,8 +46,8 @@ export class TasksController {
     @ApiParam({ name: 'id', type: String })
     @ApiResponse({ status: 200, type: Task, })
     @ApiResponse({ status: 404, type: Error, })
-    update(@Param('id') id: number, @Body() task: Task) {
-        return this.taskService.update(id, task)
+    update(@Param('id') id: number, @Body() task: UpdateTaskDto) {
+        return this.taskService.update(id, task.name, task.status)
     }
 
     @Delete(':id')

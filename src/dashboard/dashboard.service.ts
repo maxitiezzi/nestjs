@@ -12,17 +12,20 @@ export class DashboardService {
         private taskRepository: Repository<Task>,
     ) { }
 
+    getAll(): Promise<Dashboard[]> {
+        return this.dashboardRepository.find()
+    }
 
     get(id: number): Promise<Dashboard> {
         return this.dashboardRepository.findOneBy({ id: id })
     }
 
-    getTareas(idDashBoard: number): Promise<Task[]> {
-        return this.taskRepository.findBy({ idTablero: idDashBoard })
+    getTareas(idDashboard: number): Promise<Task[]> {
+        return this.taskRepository.findBy({ idDashboard: idDashboard })
     }
 
-    insert(name: string): Promise<Dashboard>{
-        let dash:Dashboard = this.dashboardRepository.create({nombre:name})
+    insert(name: string): Promise<Dashboard> {
+        let dash: Dashboard = this.dashboardRepository.create({ name: name })
         return this.dashboardRepository.save(dash)
     }
 

@@ -1,6 +1,12 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 
+export enum taskStatus {
+    pending = 'pending',
+    in_progress = 'in_Progress',
+    done = 'done'
+}
+
 @Entity()
 export class Task {
 
@@ -14,12 +20,10 @@ export class Task {
     @Column({ length: 500 })
     name: string;
 
-    @ApiProperty()
-    @Column({ default: false })
-    isPublished: boolean;
+    @Column({ nullable: false })
+    status: string;
 
-    @ApiProperty({ nullable: true })
-    @Column({ nullable: true })
-    idTablero: number;
+    @Column({ nullable: false })
+    idDashboard: number;
 
 }

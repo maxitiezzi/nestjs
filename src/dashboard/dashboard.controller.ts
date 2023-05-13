@@ -9,14 +9,13 @@ export class DashboardController {
 
     constructor(private dashBoardServide: DashboardService) { }
 
-    @Get(':id')
+    @Get()
     @ApiTags('dashboard')
-    @ApiOperation({ summary: 'Devuelve un dashboard', description: 'Devuelve una dashboard' })
-    @ApiParam({ name: 'id', type: String })
+    @ApiOperation({ summary: 'Devuelve un array con todos los dashboards', description: 'Devuelve un array con todos los dashboards' })
     @ApiResponse({ status: 200, type: Dashboard, })
     @ApiResponse({ status: 404, type: Error, })
-    getAll(@Param('id') id: number) {
-        return this.dashBoardServide.get(id)
+    getAll() {
+        return this.dashBoardServide.getAll()
     }
 
     @Get(':id/tasks')
@@ -38,7 +37,7 @@ export class DashboardController {
     }
 
     @Post()
-    insert(@Body('nombre') nombre: string){        
-        return this.dashBoardServide.insert(nombre)
+    insert(@Body('name') name: string){        
+        return this.dashBoardServide.insert(name)
     }
 }

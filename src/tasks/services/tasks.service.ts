@@ -9,18 +9,23 @@ export class TasksService {
         private taskRepository: Repository<Task>,
     ) { }
 
+    async get(id: number): Promise<Task> {
+        return this.taskRepository.findOneBy({ id: id })
+    }
+
     async findAll(): Promise<Task[]> {
         return this.taskRepository.find();
     }
 
-    async insert(name: string, idTablero: number) {
-        let newTask: Task = this.taskRepository.create({ name: name, idTablero: idTablero })
+    async insert(name: string, status: string, idDasboard: number) {
+        let newTask: Task = this.taskRepository.create({ name: name, status: status, idDashboard: idDasboard })
         return this.taskRepository.save(newTask)
     }
 
-    async update(id: number, task: Task): Promise<Task> {
+    async update(id: number, name: string, status: string): Promise<Task> {
         const taskUpdated = await this.taskRepository.findOneBy({ id: id });
-        this.taskRepository.merge(taskUpdated, task)
+        taskUpdated.name = name;
+        taskUpdated.status = status;
         return this.taskRepository.save(taskUpdated)
     }
 

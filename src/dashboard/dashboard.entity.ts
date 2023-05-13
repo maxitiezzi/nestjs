@@ -1,9 +1,10 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Task } from "src/tasks/entities/task.entity";
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from "typeorm";
 
 @Entity()
 export class Dashboard {
-    
+
     @ApiProperty({ nullable: true })
     @PrimaryGeneratedColumn()
     id: number;
@@ -13,6 +14,9 @@ export class Dashboard {
         maximum: 75
     })
     @Column()
-    nombre: string;
+    name: string;
+
+    @OneToMany(type => Task, task => task.id)
+    tasks: Task[];
 
 }
