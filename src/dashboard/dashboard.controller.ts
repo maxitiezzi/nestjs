@@ -20,7 +20,7 @@ export class DashboardController {
 
     @Get(':id/tasks')
     @ApiTags('dashboard')
-    @ApiOperation({ summary: 'Devuelve el listado de tareas del tablero', description: 'Devuelve el listado de tareas del tablero' })
+    @ApiOperation({ summary: 'Devuelve el listado de tareas del tablero', description: 'Devuelve el listado de tareas del tablero    ' })
     @ApiParam({ name: 'id', type: String })
     @ApiOkResponse({
         description: 'Array de tareas',
