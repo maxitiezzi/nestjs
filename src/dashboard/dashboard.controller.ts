@@ -11,7 +11,7 @@ export class DashboardController {
 
     @Get()
     @ApiTags('dashboard')
-    @ApiOperation({ summary: 'Devuelve un array con todos los dashboards', description: 'Devuelve un array con todos los dashboards' })
+    @ApiOperation({ summary: 'Devuelve un array con todos los dashboards', description: 'Devuelve un array con todos los dashboards pullll' })
     @ApiResponse({ status: 200, type: Dashboard, })
     @ApiResponse({ status: 404, type: Error, })
     getAll() {
