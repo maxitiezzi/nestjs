@@ -1,22 +1,22 @@
-import { taskStatus } from "../entities/task.entity"
-import { IsIn, IsString, IsNumber, IsOptional } from 'class-validator'
+import { taskStatus } from '../entities/task.entity';
+import { IsIn, IsString, IsNumber, IsOptional } from 'class-validator';
 
 export class CreateTaskDto {
-    @IsString()
-    name: string;
+  @IsString()
+  name: string;
 
-    @IsIn([taskStatus.done, taskStatus.in_progress, taskStatus.pending])
-    status?: taskStatus;
+  @IsIn([taskStatus.done, taskStatus.in_progress, taskStatus.pending])
+  status?: taskStatus;
 
-    @IsNumber()
-    @IsOptional()
-    idDashboard: number
+  @IsNumber()
+  @IsOptional()
+  idDashboard: number;
 }
 
 export class UpdateTaskDto {
-    @IsString()
-    name: string;
+  @IsString()
+  name: string;
 
-    @IsIn([taskStatus.done, taskStatus.in_progress, taskStatus.pending])
-    status?: taskStatus;
+  @IsIn([taskStatus.done, taskStatus.in_progress, taskStatus.pending])
+  status?: taskStatus;
 }

@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm';
-import { Dashboard } from './dashboard.entity';
+import { Dashboard } from './entities/dashboard.entity';
 
 export const dashboardProviders = [
   {
