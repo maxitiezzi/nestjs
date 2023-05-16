@@ -9,6 +9,9 @@ export enum taskStatus {
 
 @Entity()
 export class Task {
+  @ApiProperty({
+    description: 'Primary key',
+  })
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -19,9 +22,16 @@ export class Task {
   @Column({ length: 500 })
   name: string;
 
+  @ApiProperty({
+    description:
+      "Estado de la tarea, los posibles estados son 'done', 'in_progress', 'pending'",
+  })
   @Column({ nullable: false })
   status: string;
 
+  @ApiProperty({
+    description: 'Foreign key a la tabla dashboard',
+  })
   @Column({ nullable: false })
   idDashboard: number;
 }
