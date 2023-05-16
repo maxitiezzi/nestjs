@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpException,
+  Inject,
   Param,
   Post,
   Put,
@@ -11,18 +13,21 @@ import { TasksService } from '../services/tasks.service';
 import { Task } from '../entities/task.entity';
 import {
   ApiBody,
-  ApiConsumes,
   ApiOperation,
   ApiParam,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { type } from 'os';
 import { CreateTaskDto, UpdateTaskDto } from '../dto/task.dto';
+import { Repository } from 'typeorm';
 
 @Controller('tasks')
 export class TasksController {
-  constructor(private taskService: TasksService) {}
+  constructor(
+    private taskService: TasksService,
+    @Inject('TASK_REPOSITORY')
+    private taskRepository: Repository<Task>,
+  ) {}
 
   @Get()
   @ApiTags('tasks')
@@ -64,11 +69,13 @@ export class TasksController {
   @ApiResponse({ status: 200, type: Task })
   @ApiResponse({ status: 404, type: Error })
   insert(@Body() newTask: CreateTaskDto) {
-    return this.taskService.insert(
-      newTask.name,
-      newTask.status,
-      newTask.idDashboard,
-    );
+    let task: Task = this.taskRepository.create({
+      name: newTask.name,
+      status: newTask.status,
+      idDashboard: newTask.idDashboard,
+    });
+
+    return this.taskService.insert(task);
   }
 
   @Put(':id')
@@ -80,8 +87,15 @@ export class TasksController {
   @ApiParam({ name: 'id', type: String })
   @ApiResponse({ status: 200, type: Task })
   @ApiResponse({ status: 404, type: Error })
-  update(@Param('id') id: number, @Body() task: UpdateTaskDto) {
-    return this.taskService.update(id, task.name, task.status);
+  async update(@Param('id') id: number, @Body() task: UpdateTaskDto) {
+    const taskUpdated = await this.taskRepository.findOneBy({ id: id });
+    if (!taskUpdated || !taskUpdated.id) {
+      throw new HttpException('No se encontro la tarea a modificar', 404);
+    }
+    taskUpdated.name = task.name;
+    taskUpdated.status = task.status;
+
+    return this.taskService.update(taskUpdated);
   }
 
   @Delete(':id')
@@ -93,7 +107,11 @@ export class TasksController {
   @ApiParam({ name: 'id', type: String })
   @ApiResponse({ status: 200 })
   @ApiResponse({ status: 404, type: Error })
-  delete(@Param('id') id: number) {
+  async delete(@Param('id') id: number) {
+    const taskUpdated = await this.taskRepository.findOneBy({ id: id });
+    if (!taskUpdated || !taskUpdated.id) {
+      throw new HttpException('No se encontro la tarea a eliminar', 404);
+    }
     return this.taskService.delete(id);
   }
 }

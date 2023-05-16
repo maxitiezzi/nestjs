@@ -17,20 +17,12 @@ export class TasksService {
     return this.taskRepository.find();
   }
 
-  async insert(name: string, status: string, idDasboard: number) {
-    let newTask: Task = this.taskRepository.create({
-      name: name,
-      status: status,
-      idDashboard: idDasboard,
-    });
-    return this.taskRepository.save(newTask);
+  async insert(task: Task) {
+    return this.taskRepository.save(task);
   }
 
-  async update(id: number, name: string, status: string): Promise<Task> {
-    const taskUpdated = await this.taskRepository.findOneBy({ id: id });
-    taskUpdated.name = name;
-    taskUpdated.status = status;
-    return this.taskRepository.save(taskUpdated);
+  async update(task: Task): Promise<Task> {
+    return this.taskRepository.save(task);
   }
 
   async delete(id: number) {

@@ -24,8 +24,7 @@ export class DashboardService {
     return this.taskRepository.findBy({ idDashboard: idDashboard });
   }
 
-  insert(name: string): Promise<Dashboard> {
-    let dash: Dashboard = this.dashboardRepository.create({ name: name });
-    return this.dashboardRepository.save(dash);
+  insert(dashboard: Dashboard): Promise<Dashboard> {
+    return this.dashboardRepository.save(dashboard);
   }
 }

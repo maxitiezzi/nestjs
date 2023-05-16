@@ -1,11 +1,19 @@
 import { taskStatus } from '../entities/task.entity';
-import { IsIn, IsString, IsNumber, IsOptional } from 'class-validator';
+import {
+  IsIn,
+  IsString,
+  IsNumber,
+  IsOptional,
+  IsNotEmpty,
+} from 'class-validator';
 
 export class CreateTaskDto {
   @IsString()
+  @IsNotEmpty()
   name: string;
 
   @IsIn([taskStatus.done, taskStatus.in_progress, taskStatus.pending])
+  @IsNotEmpty()
   status?: taskStatus;
 
   @IsNumber()
@@ -15,8 +23,10 @@ export class CreateTaskDto {
 
 export class UpdateTaskDto {
   @IsString()
+  @IsNotEmpty()
   name: string;
 
   @IsIn([taskStatus.done, taskStatus.in_progress, taskStatus.pending])
+  @IsNotEmpty()
   status?: taskStatus;
 }
